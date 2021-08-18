@@ -1,0 +1,17 @@
+var a =1;
+var b= 2.9;
+var c='Hello';
+var d=x;
+var e="World";
+var f="Hwllo world";
+var g=29>2;
+var h=true;
+console.log(a, 'is', typeof(a));
+console.log(b, 'is', typeof(b));
+console.log(c, 'is', typeof(c));
+console.log(d, 'is', typeof(d));
+console.log(e, 'is', typeof(e));
+console.log(f, 'is', typeof(f));
+console.log(g, 'is', typeof(g));
+console.log(h, 'is', typeof(h));
+var i=new Date();
