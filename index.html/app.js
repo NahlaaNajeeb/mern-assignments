@@ -6,3 +6,6 @@ function addlist(){
     }
     document.getElementById("numberList").innerHTML = output;
 }
+<script>
+
+</script>
