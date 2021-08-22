@@ -22,7 +22,7 @@ function searcht(books){
         if(book.bookname.match("ferrari"))
             search.push(book.bookname);
     }
-    return sea;
+    return search;
 }
 
 function find(books){
@@ -37,7 +37,7 @@ function find(books){
 function pricer(books){
     let pric=[];
     for(let book of books ){
-        if(book.bookprice > 300 && book.bookprice < 500 )
+        if(book.bookprice > 100 && book.bookprice < 500 )
             pric.push(book.bookname);
     }
     return pric;
@@ -47,7 +47,7 @@ function pricer(books){
 function rate(books){
     let rat=[];
     for(let book of books ){
-        if(book.bookrating >"8.5")
+        if(book.bookrating >"8")
             rat.push(book.bookname);
     }
     return rat;
