@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete</title>
+    <link rel="stylesheet" href="/bootstrap.min.css">
+    <link rel="stylesheet" href="/font-awesome.min.css">
+    <link rel="stylesheet" href="/app.css">
+</head>
+<body>
+    
+    <fieldset>
+        <div class='jumbotron'>
+            <h1 class='jumbotron'>Book's Web</h1>
+        <a href="books/list">Books</a>
+        <a href="books/add">Add Book</a>
+
+    </fieldset>
+    <fieldset>
+        <b>Delete :</b>
+        <br>
+        <%= book.title%> ?
+        <br>
+        <br>
+
+        This process can't be undone.Are your sure ?
+        <br>
+        <br>
+        <form action="/book/delete" method='post'>  
+        
+
+            <div class="form-group">
+
+                <button class='btn btn-primary btn-lg form-control' type="submit">Yes! Delete it</button>
+                <button class='btn btn-primary btn-lg form-control' type="submit">No</button>
+            </div>
+           
+
+        
+        
+        
+        </form>
+    
+        
+           
+
+        
+        
+        
+       
+    </fieldset>
+
+    
+</body>
+</html>
