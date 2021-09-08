@@ -1,0 +1,26 @@
+.booktwo{
+    width:500px;
+    height: 500px;
+    border:20px saddlebrown ;
+    border-radius: 10%;
+    box-shadow: 20px 20px 20px whitesmoke;
+
+}
+.nav-right{
+    float:right;
+}
+
+
+.footer, footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: black;
+    color: white;
+    text-align: center;
+  }
+
+  footer a, footer a:hover{
+      color:white;
+  }
