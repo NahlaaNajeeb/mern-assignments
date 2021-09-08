@@ -65,7 +65,7 @@ render(){
             <h2>Home Page</h2>
             <p>
                 Welcome to Book's web Home page
-                <p> className='quote' src={this.state.quotes[this.state.curImage]} <p/>
+                <p> {this.state.quotes[this.state.curImage]} </p>
                 <img className='bodyimage' src={this.state.pictures[this.state.curImage]} alt='pictures'/>
                 <button onClick={this.handleClick}>Refresh</button>
             </p>
