@@ -1,49 +1,80 @@
-import React from 'react'
+import React,{useState} from 'react'
+import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import AppHeader from './app-header';
 import AppFooter from './app-footer';
 import AppHome from './app-home';
 import BookDetails from './book-details';
-// import Content from './Readmore'
-  
+import BookList from './book-list';
+import BookAdd from './book-add';
+import NotFound from './not-found';
+import BookEdit from './book-edit';
+import If from './if';
+import Signin from './login';
+import Signup from './reg';
+import AuthorDetails from './author-details';
+import AuthorList from './author-list';
+import AuthorAdd from './author-add';
+import AuthorEdit from './author-edit';
 
 
-const component=({title})=>{
-
-    let book= {
-        "_id": "5f4fd116c277b45acc698bce",
-        "isbn": "9781393495574",
-        "title": "The Accursed God",
-        "author": "Vivek Dutta Mishra",
-        "pages": "380",
-        "price": "199",
-        "rating": "4.9",
-        "votes": "49",
-        "description": "THE LOST EPIC ============ The story of the epic battle of Kurukshetra has been told and retold for ages. Millennia of dust, fables, imaginations — and the epic itself is lost. What remained is the story of a family feud and ambition of Kauravas and Pandavas. But why, then, was this an epic war? Why entire Aryavart plunged into this first real world-war? Why the echo of this ancient war still resonates after all those centuries? Rediscover the lost epic whose origin lies in the birth of the Kurukshetra that had tasted its first blood over a hundred years before the final Mahabharata war. Discover the complete saga of Mahabharata which goes far and beyond just Kauravas and Pandavas and their ambitions. THE ACCURSED GOD ================ Long before the epic battle, long before even the birth of Kurukshetra, a man swore on his father’s pyre to avenge against the mightiest empire, any civilization had ever seen. Between his might and near-certain destruction of the Empire, stood a warrior, who rose like a phoenix from the ashes of his seven dead brothers — taking the mantle of a fabled Accursed God. In the clash that followed, Aryavart heard several more oaths by the side of more burning pyres, until, a young king decided that no price is too high for peace. Little did he know that the price would be a war engulfing the entire Aryavart, where few would live to tell the tale. And only one man can delay the inevitable if not prevent it. He is the accursed God and even he doesn’t know that destiny is like a quicksand, the more he tries to prevent it, the faster Aryavart moves towards the ultimate catastrophe. Discover the saga of a man’s journey to that of a legendary and universally hated Accursed God, the saga of the ruthless ambitions and unfulfilled loves, endless deceits and vengeful oaths, and the saga of the battles to prevent the ultimate war. TESTIMONIALS ============= When is the last time you finished a book and discover something? Here is a gripping and intriguing take on the greatest epic of all time through the eyes of its pivotal character that leaves your mind exhilarated, adding a fresh perspective to the tale that’s known, yet unknown. Throughout the fast action-packed book, the author masterfully blends politics, war and science and blurs the gap between love and hate, peace and war, and fiction and reality. A must-read novel which will leave you wanting for more. --- Colonel Avanish, Indian Army",
-        "tags": [
-            "epic",
-            "indian",
-            "mahabharata",
-            "bhishma",
-            "history"
-        ],
-        "series": "The Lost Epic",
-        "seriesIndex": "1",
-        "releaseDate": "2020-01-14T18:30:00.000Z",
-        "cover": "http://thelostepic.com/wp-content/uploads/2021/04/THE-ACCURSED-GOD-Front-780x1100-1.jpg"
-    }
 
 
+
+
+const Component=({title})=>{
+   
     return <div className='main'>
-            <AppHeader title={title} />
-            <div className='container'>
-                <BookDetails book={book}/>                
-            </div>
-            <div className='expand'>{book.description}</div>
-            {/* */}
+           
 
-            <AppFooter copyright="conceptarchitect.in" url="http://conceptarchitect.in" />
+            <BrowserRouter>
+                <AppHeader title={title} />
+                <div className='container'>
+                    <Switch>
+                        
+                        <Route path="/" exact={true} >
+                            <AppHome title="Book's Home"/>
+                        </Route>
+                        
+                        <Route path="/book/list">
+                            <BookList />
+                        </Route>
+
+                        <Route path="/book/add" component={BookAdd} />
+                        
+                        <Route path="/book/details/:isbn" >
+                            <BookDetails  />
+                        </Route>
+                        <Route path="/book/edit/:isbn" >
+                            <BookEdit  />
+                        </Route>
+                        <Route path="/user/signin" >
+                            <Signin />
+                        </Route>
+                        <Route path="/user/signup" >
+                            <Signup />
+                            </Route>
+                        <Route path="/author/details" >
+                            <AuthorDetails />
+                        </Route>
+                        <Route path="/author/add" >
+                            <AuthorAdd/>
+                        </Route>
+                        <Route path="/author/edit" >
+                            <AuthorEdit/>
+                        </Route>
+                        <Route path="/author/list" >
+                            <AuthorList/>
+                        </Route>
+                        <Route path="*" component={NotFound} />
+                        
+                    </Switch>
+                </div>            
+                <AppFooter copyright="conceptarchitect.in" url="http://conceptarchitect.in" />
+            </BrowserRouter>           
+
+            
         </div>;
 };
 
 
-export default component;
+export default Component;
