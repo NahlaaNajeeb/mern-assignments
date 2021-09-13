@@ -1,5 +1,11 @@
 const mongoose = require('mongoose');
-console.log(mongoose);
+
+
+const review=mongoose.Schema({
+    name:String,
+    comment:String,
+    rating:Number
+});
 
 const books = mongoose.Schema({
    
@@ -21,15 +27,8 @@ const books = mongoose.Schema({
         type:Array,
         required:false
     },
-    cover:String,
-    review:{
-        type:String,
-        required:true
-    },
-    rating:{
-        type:Number,
-        required:true
-    }
+    reviews:[review],
+    cover:String
 },{
     //collection: 'booksdb'  //--> if our collection name is different from assumed collection name based on Model name
 });

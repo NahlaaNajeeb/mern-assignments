@@ -46,10 +46,7 @@
                         <td>${book.author}</td>
                         <td>
                             <button onClick="delete('${book.isbn}')">delete</button>
-                            <button onClick="details('${book.isbn}')">details</buttond>
-                                <button onClick="review('${book.isbn}')">review</button>
-                            <button onClick="ratings('${book.isbn}')">rating</buttond>
-
+                            <a href='/details.html?isbn=${book.isbn}')">details</a>
                         </td>
                 `;
             }
@@ -57,6 +54,7 @@
             document.getElementById('books').innerHTML=data;
         };
 
+        loadAllBooks();
 
     </script>
     
