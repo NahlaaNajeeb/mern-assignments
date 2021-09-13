@@ -6,7 +6,7 @@ const getOldBookRouter=require('./routes/books-api-route-old');
 const getUserRouter= require('./routes/user-route');
 const cors=require('cors');
 const getAuthorRouter=require('./routes/authors-api-route');
-// const getAllReviews =require('./routes/review')
+ const getAllReviews =require('./services/review-service');
 
 function configureExpress(basePath){
     const app=express();   
