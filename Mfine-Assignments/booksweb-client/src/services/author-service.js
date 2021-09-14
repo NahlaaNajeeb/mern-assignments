@@ -1,20 +1,40 @@
 import { contains, copyObject, delay } from '../utils/core';
-
-
-
+import http from './http';
 const url = 'http://localhost:5000/api/authors/';
 
+
+
 export class AuthorService {
-
     static instance = new AuthorService();
+    constructor() { }
 
-    constructor() {
+    getAll=async ()=>{
+        try{
+            //TODO: your await logic here
+            // let response= await axios.get(url,{
+            //     headers:{
+            //         "x-api-key":"LET ME PASS"                    
+            //     }
+            // });
 
-    }
+            let response=await  http.get('authors'); //http://localhost:5000/api/authors
+            console.log('response',response);
+            return response.data;
+            
+        }catch(error){
+            console.log('error',error);
+            return null;
+        }
+    };
 
-    getAll = async () => {
+
+    _getAll = async () => {
         try {
-            let response = await fetch(url);
+            let response = await fetch(url,{
+                headers:{
+                    api_key:"LET ME PASS"
+                }
+            });
             console.log('response', response);
             if (response.status !== 200) {
                 console.error('http error', response.status);
@@ -27,40 +47,18 @@ export class AuthorService {
             return null;
         }
     }
+    addAuthor = async (author) => {
+        try{
+            //let response=await axios.post(url,book);            
+            let response= await http.post('authors',author);
+            return {success:true, data:response.data};
 
+        }catch(error){
 
-    addAuthor = (author) => {
-        this.authors.push(author);
-        this.save();
+            console.log('error posting data', error);
+            return {success:false, error:error};
+        }
     }
 
-    // removeBook = async (isbn) => {
-    //     await delay(100);
-    //     this.books = this.books.filter(b => b.isbn !== isbn);
-    //     this.save();
-    // }
-
-
-
-    // getAuthorsById = async (id) => {
-    //     await delay(2000);
-    //     return this.authors.find(author => author.id === id);
-    // }
-
-    // getBooksByAuthor = (author) => {
-    //     return this.books.filter(book => contains(book.author, author));
-    // }
-
-    // getBooksByTitle = (title) => {
-    //     return this.books.filter(book => contains(book.title, title));
-    }
-
-    // async update(isbn, book) {
-    //     let existing = await this.getBookByIsbn(isbn);
-    //     if (existing) {
-    //         copyObject(existing, book);
-    //         console.log('existing', existing);
-    //         this.save();
-    //     }
-    // }
-
+    
+}

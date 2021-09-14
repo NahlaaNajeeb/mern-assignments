@@ -12,9 +12,7 @@ import If from './if';
 import UserSignUp from './reg';
 import UserSignIn from './login';
 import AuthorList from './author-list';
-import AuthorAdd from './author-add';
-import AuthorEdit from './author-edit';
-import AuthorDetails from './author-details';
+import AddAuthor from './author-add';
 
 const Component=({title})=>{
    
@@ -48,18 +46,12 @@ const Component=({title})=>{
                         <Route path="/user/signin" >
                             <UserSignIn />
                         </Route>
-                        <Route path="/author/list" >
+                        <Route path="/user/author" >
                             <AuthorList />
                         </Route>
-                        <Route path="/author/edit" >
-                            <AuthorEdit/>
+                        <Route path="/author/add" >
+                            <AddAuthor />
                         </Route>
-                        <Route path="/author/details" >
-                            <AuthorDetails/>
-                        </Route>
-                        <Route path="/author/add" component={AuthorAdd} />
-                            {/* <AddAuthor />
-                        </Route> */}
                         <Route path="*" component={NotFound} />
                         
                     </Switch>
@@ -69,7 +61,6 @@ const Component=({title})=>{
 
             
         </div>;
-        
 };
 
 

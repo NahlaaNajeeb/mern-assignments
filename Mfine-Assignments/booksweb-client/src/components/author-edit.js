@@ -9,16 +9,13 @@ import NotFound from './not-found';
 const Component=(props)=>{
 
     console.log('props',props);
-    const[author,setAuthor]=useState(null);
-
-    
-
-    
+    const[author,setAuthor]=useState(null); 
 
     const {id}=useParams();
     console.log('id',id);
 
     const history=useHistory();
+    const [errors,setErrors]= useState(null, props);
     
     
      useEffect(()=>{
@@ -33,16 +30,22 @@ const Component=(props)=>{
         return <NotFound title="author Not Found" message={`Missing id: ${id}`}/>
     }
 
-    const handleSave=(author)=>{
-        console.log('author',author);
-        AuthorService.instance.update(id,author);
-        history.push('/author/list'); //goto /author/list
+    const handleSave=async (author)=>{
+        
+        const result= await AuthorService.instance.update(id,author);
+        if(result.success)
+            history.push('/author/list'); //goto /author/list
+        else{
+            const _errors= result.error.response.data.error.errors;
+            setErrors(_errors);
+        }
     };
 
+   
     return (
         <div>
             <h2>Edit Info</h2>
-            <AuthorEditor author={author} onSave={handleSave}/>
+            <AuthorEditor author={author} error={errors} onSave={AuthorService.instance.update}/>
         </div>
     );
 };

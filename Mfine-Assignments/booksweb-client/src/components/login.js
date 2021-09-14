@@ -1,6 +1,7 @@
 
 
 import React from 'react';
+import {LabeledInput} from "./input-controls";
 
 const Component=()=>{
 
@@ -9,9 +10,9 @@ const Component=()=>{
             
             <form >
                 <h1>User Login</h1>
-                <label> email: </label><br/> <input type="email" value='' placeholder="Enter your email"/><br/>
-                <label> Password: </label><br/><input type="password" value='' placeholder="Enter your password"/><br/>
-               <br/> <input type="submit" value="Login"/><br/>
+                <LabeledInput id="Email"/>
+               <LabeledInput id="password"/>
+               <button type="submit" className="btn btn-primary">Login</button>
             </form>
 
         </div>

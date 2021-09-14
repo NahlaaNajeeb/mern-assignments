@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Loading from './loading';
-
+import NotFound from './not-found';
 import { AuthorService } from '../services/author-service';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash, faInfo, faEdit, } from '@fortawesome/free-solid-svg-icons'
+
 
 
 
@@ -10,77 +13,111 @@ import { AuthorService } from '../services/author-service';
 const Component = () => {
 
     const [authors, setAuthors] = useState([]);
+    const [author, setAuthor] = useState(null);
 
     useEffect(() => {
         AuthorService.instance.getAll().then(setAuthors);
-    });
+    }, []);
 
-    const handleDelete = async (author) => {
+    // const handleDelete = async (author) => {
+    //     setAuthor(author);
 
-        if (window.confirm(`Delete\n${author.name}\nYou can't undo the changes`)) {
-            await AuthorService.instance.removeAuthor(author.id);
-            setAuthors(authors.filter(b => b.id !== author.id));
-        } else {
-
-        }
+    // }
+    if (authors === null) {
+        return <NotFound title="Error Connecting to Server" message="Ple try a little Later" />
     }
 
 
 
-     if (authors.length === 0) {
+    if (authors.length === 0) {
         return <Loading text="building our recommendation" />
     }
-   
-        return (
-            <div className='author-list'>
-                <image class="image-grid-col-2 image-grid-row-2" />
-    
-    
-    
-                <h2>Author List</h2>
-    
-                
-                    <tbody>
-    
-                                <tr >
-                                    <td><img src='/images/vivek.jpg' /></td>
-                                    <br/><br/>
-                                    
-                                    
-                                    <td><img src='/images/jeff.jpg'/></td>
-                                    <td><img src='/images/ramdh.jpg'/></td>
-                                    <td><img src='/images/john.jpg'/></td>
-                                    <td><img src='/images/rowling.jpg'/></td>
-    
-                                    {/* <br/><p>name:"Vivek Dutta Mishra"</p><br/> */}
-                                   
-    
-                                    {/* <td>
-    
-                                        <Link to={`/author/details/${author.id}`} className='btn btn-sm btn-primary fa fa-info'>Info</Link>
-                                        <Link to={`/book/edit/${author.id}`} className='btn btn-sm btn-primary fa fa-edit'>edit</Link>
-    
-                                    </td> */}
-                                </tr>
-                            
-                        
-    
-    
-    
-                    </tbody>
-                {/* </table> */} 
-    
-    
-    
-            </div>);
-    
-    
-    
-    };
-    
-    
 
-   
+    return (
+        <div>
+
+            <h2>Author List</h2>
+            <div className='body'>
+                <div className='container'>
+
+
+
+
+                    <div className='list'>
+                        <img src='/images/vivek.jpg' />
+                        <div className='name'>Vivek-dutta mishra</div>
+                        
+
+                        <button className='btn btn-sm btn-primary '><FontAwesomeIcon icon={faInfo} /></button>
+                        <button className='btn btn-sm btn-primary'><FontAwesomeIcon icon={faEdit} /></button>
+
+
+                    </div>
+                    <div className='list'>
+                        <img src='/images/jeff.jpg' />
+                        <div className='name'>jeffrey Archer</div>
+                        <button className='btn btn-sm btn-primary '><FontAwesomeIcon icon={faInfo} /></button>
+                        <button className='btn btn-sm btn-primary'><FontAwesomeIcon icon={faEdit} /></button>
+
+                    </div>
+                    <div className='list'>
+                        <img src='/images/ramdh.jpg' />
+                        <div className='name'>Ramdhari-singh dinkar</div>
+                        <button className='btn btn-sm btn-primary '><FontAwesomeIcon icon={faInfo} /></button>
+                        <button className='btn btn-sm btn-primary'><FontAwesomeIcon icon={faEdit} /></button>
+
+                    </div>
+                    <div className='list'>
+                        <img src='/images/john.jpg' />
+                        <div className='name'>John Grisham</div>
+                        <button className='btn btn-sm btn-primary '><FontAwesomeIcon icon={faInfo} /></button>
+                        <button className='btn btn-sm btn-primary'><FontAwesomeIcon icon={faEdit} /></button>
+
+                    </div>
+                    <div className='list'>
+                        <img src='/images/rowling.jpg' />
+                        <div className='name'>JK Rowling</div>
+                        
+                    
+                        
+
+                        <button   className='btn btn-sm btn-primary '><FontAwesomeIcon icon={faInfo} /></button>
+                        <button className='btn btn-sm btn-primary'><FontAwesomeIcon icon={faEdit} /></button>
+
+                        
+                    </div>
+                </div>
+
+
+
+
+
+
+                {/* <tbody>
+                    {
+                        authors.map((author) => (
+                            <tr key={author.id}>
+                                <td>{author.name}</td>
+
+                                <td>
+
+                                    <Link to={`/author/details/{author.id}`} className='btn btn-sm btn-primary '><FontAwesomeIcon icon={faInfo} /></Link>
+                                    <Link to={`/book/edit/{author.id}`} className='btn btn-sm btn-primary'><FontAwesomeIcon icon={faEdit} /></Link>
+
+                                </td>
+                            </tr>
+                        ))
+                    }
+                </tbody> */}
+            </div>
+        </div>);
+
+
+}
+
+
+
+
 
 
 export default Component;

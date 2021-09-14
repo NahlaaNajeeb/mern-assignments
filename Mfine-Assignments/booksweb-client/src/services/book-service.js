@@ -1,20 +1,41 @@
 import { contains, copyObject, delay } from '../utils/core';
-
-
-
+import http from './http';
+//import axios from 'axios';
 const url = 'http://localhost:5000/api/books/';
+
+
 
 export class BookService {
 
     static instance = new BookService();
 
-    constructor() {
+    
+    getAll=async ()=>{
+        try{
+            //TODO: your await logic here
+            // let response= await axios.get(url,{
+            //     headers:{
+            //         "x-api-key":"LET ME PASS"                    
+            //     }
+            // });
 
-    }
+            let response=await  http.get('books'); //http://localhost:5000/api/books
+            console.log('response',response);
+            return response.data;
+            
+        }catch(error){
+            console.log('error',error);
+            return null;
+        }
+    };
 
-    getAll = async () => {
+    _getAll = async () => {
         try {
-            let response = await fetch(url);
+            let response = await fetch(url,{
+                headers:{
+                    api_key:"LET ME PASS"
+                }
+            });
             console.log('response', response);
             if (response.status !== 200) {
                 console.error('http error', response.status);
@@ -29,39 +50,67 @@ export class BookService {
     }
 
 
-    addBook = (book) => {
-        this.books.push(book);
-        this.save();
+    addBook = async (book) => {
+        try{
+            //let response=await axios.post(url,book);            
+            let response= await http.post('books',book);
+            return {success:true, data:response.data};
+
+        }catch(error){
+
+            console.log('error posting data', error);
+            return {success:false, error:error};
+        }
+    }
+
+    async update(book) {
+        //TODO: COMPLETE THIS WORK!
+        const isbn=book.isbn;
+        try{
+            let response=await http.put(`/books/${isbn}`,book);
+            return {success:true,data:response};
+        }catch(error){
+            return {success:false, error:error};
+        }
+    }
+
+    getBookByIsbn = async (isbn) => {
+        try{
+            //let response=await axios.get(`${url}/${isbn}`);
+            let response= await http.get(`books/${isbn}`);
+            console.log('book by isbn', response.data);
+            return response.data;
+        }catch(error){
+            console.log('error fetching book by isbn',error);
+            return undefined;
+        }
     }
 
     removeBook = async (isbn) => {
-        await delay(100);
-        this.books = this.books.filter(b => b.isbn !== isbn);
-        this.save();
+      //TODO: IMPLEMENT THE REMOVE BOOK
+      try{
+        console.log('deleting in service',isbn);
+        await http.delete(`books/${isbn}`);
+        console.log('book deleted successfully',isbn);
+        return {success:true};
+      }catch(error){
+        console.log('error deleting book',error);
+        return {success:false, error:error};
+      }
     }
 
 
 
-    getBookByIsbn = async (isbn) => {
-        await delay(2000);
-        return this.books.find(book => book.isbn === isbn);
-    }
+    
 
     getBooksByAuthor = (author) => {
-        return this.books.filter(book => contains(book.author, author));
+        return [];
     }
 
     getBooksByTitle = (title) => {
-        return this.books.filter(book => contains(book.title, title));
+        return [];
     }
 
-    async update(isbn, book) {
-        let existing = await this.getBookByIsbn(isbn);
-        if (existing) {
-            copyObject(existing, book);
-            console.log('existing', existing);
-            this.save();
-        }
-    }
+    
 
 }
