@@ -9,7 +9,7 @@ const review=mongoose.Schema({
 
 const books = mongoose.Schema({
    
-    title: String,
+    title: {type:String, required:true},
     isbn:{
         type:String,
         required:true

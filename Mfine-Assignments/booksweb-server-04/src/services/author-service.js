@@ -4,57 +4,77 @@ const { ServiceError } = require('../utils/service-error');
 
 
 
-
-function autho(object) { 
-
+function bindMethods(object) {
+    console.log('started binding...', object);
+    for (let prop in object) {
+        let propValue = object[prop];
+        console.log('prop', prop);
+        if (typeof (propValue) === 'function') {
+            console.log('binding', propValue);
+            propValue.bind(object);
+        }
+    }
 }
+
 class AuthorService {
-    constructor() { 
+    constructor() {
 
         const functions = [
             this.getAllAuthors,
+            this.addAuthor,
             this.getAuthorById,
             this.updateAuthor,
-            this.deleteAuthor,
-            this.addAuthor,
-
+            this.deleteAuthor
+            
         ];
-
-    for(let a of functions) {
-        this[a.name] = a.bind(this);
-    }}
-
+        for (let f of functions) {
+            this[f.name] = f.bind(this);
+        }
+    }
     async getAllAuthors() {
         return await Author.find();
     }
 
-    async getAuthorById({ id }) {
+    async getAuthorById({id}) {
         let author = await Author.findOne({ id: id });
         if (!author)
-            throw new ServiceError(404, "Author not found", { id: id });
+            throw new ServiceError(404, "Invalid Author Id", { id: id });
 
         else
             return author;
     }
-
-
-    async addAuthor({ auth }) {
-
+    async addAuthor({body}){
+        try{
+            
+            let authorData={...body};
+            console.log('authorData',authorData);
+            let newAuthor= new Author({...body});
+            console.log('new Author',newAuthor);
+            await newAuthor.save();
+            return newAuthor;
+        } catch(error) {
+            console.log('error saving', error);
+            if(error.constructor.name==="ServiceError")
+                throw error;
+            else
+                throw new ServiceError(400, error.message, {error});
+        }
+    }
+  /*  async addAuthor({ body }) {
         try {
-            let newAuthor = new Author(auth);
+            let newAuthor = new Author(body);
             await newAuthor.save();
             return newAuthor;
         }
         catch (error) {
             throw new ServiceError(404, error.message, { error });
         }
-    }
-
-    async updateAuthor({ id, auth }) {
+    }*/
+    async updateAuthor({ id, body }) {
         let author = await this.getAuthorById({ id });
-        return await Author.findOneAndUpdate({ id: id }, auth);
-    }
+        return await Author.findOneAndUpdate({ id: id }, body);
 
+    }
     async deleteAuthor({ id }) {
         try {
             let author = await Author.getAuthorById({ id });
@@ -63,7 +83,7 @@ class AuthorService {
         catch (e) {
             console.log(e);
         }
-    }
 
+    }
 }
-module.exports = { AuthorService }
+module.exports = { AuthorService };

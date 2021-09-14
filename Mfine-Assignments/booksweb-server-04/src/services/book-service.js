@@ -53,13 +53,24 @@ class  BookService{
 
     async addBook({body}){
         try{
-            let newBook= new Book(body);
+            //console.log('adding book',body);
+            // let existing= Book.findOne({isbn:body.isbn});
+            // if(existing){
+            //     throw new  ServiceError(400,"Duplicate ISBN",{isbn});
+            // }
+
+            let bookData={...body};
+            console.log('bookData',bookData);
+            let newBook= new Book({...body});
+            console.log('new book',newBook);
             await newBook.save();
             return newBook;
         } catch(error) {
-
-            throw new ServiceError(400, error.message, {error});
-
+            console.log('error saving', error);
+            if(error.constructor.name==="ServiceError")
+                throw error;
+            else
+                throw new ServiceError(400, error.message, {error});
         }
     }
 
@@ -74,17 +85,19 @@ class  BookService{
 
     async removeBook({id}){
         try{
+        console.log('trying to remove book',id);
         let book=await this.getBookByIsbn({id});
         await book.delete();
         }catch(e){
-            console.log(e);
+            console.log(e); 
         }
 
     }
 
     async updateBook({id,body}){
          let book=await this.getBookByIsbn({id});
-        return await Book.findOneAndUpdate({isbn:id},body);
+         await Book.findOneAndUpdate({isbn:id},body);
+         return await Book.findOne({isbn:id});
     }
     async getAllAuthors(){
         return await Book.distinct('author');

@@ -19,7 +19,7 @@ const getRouter= ()=>{
         .get(handleRequest(service.getAllAuthors))
         .post(handleRequest(service.addAuthor));
         router
-        .route(':/id')
+        .route('/id')
         .get(handleRequest(service.getAuthorById))
         .put(handleRequest(service.updateAuthor))
         .delete(handleRequest(service.deleteAuthor));
