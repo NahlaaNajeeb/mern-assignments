@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useEffect} from 'react'
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import AppHeader from './app-header';
 import AppFooter from './app-footer';
@@ -8,22 +8,32 @@ import BookList from './book-list';
 import BookAdd from './book-add';
 import NotFound from './not-found';
 import BookEdit from './book-edit';
-import If from './if';
-import UserSignUp from './reg';
-import UserSignIn from './login';
-import AuthorList from './author-list';
-import AuthorAdd from './author-add';
-import AuthorEdit from './author-edit';
-import AuthorDetails from './author-details';
+import Login from './user-login';
+import Register from './user-register';
+import AuthorManagerScreen from './author-manager-screen';
+import {useDispatch} from 'react-redux';
+import {getAllAuthors} from '../store/author-action';
+import {getAllBooks} from '../store/book-action';
+import BookManagerScreen from './book-manager-screen';
 
 const Component=({title})=>{
+
+    const dispatch=useDispatch();
+    useEffect(()=>{
+        getAllAuthors(dispatch);
+    },[]);
+
+    useEffect(()=>{
+        getAllBooks(dispatch);
+    },[]);
+    
    
     return <div className='main'>
            
 
             <BrowserRouter>
                 <AppHeader title={title} />
-                <div className='container'>
+                <div className="main-body">
                     <Switch>
                         
                         <Route path="/" exact={true} >
@@ -41,25 +51,14 @@ const Component=({title})=>{
                         </Route>
                         <Route path="/book/edit/:isbn" >
                             <BookEdit  />
-                            </Route>
-                        <Route path="/user/signup" >
-                            <UserSignUp />
                         </Route>
-                        <Route path="/user/signin" >
-                            <UserSignIn />
-                        </Route>
-                        <Route path="/author/list" >
-                            <AuthorList />
-                        </Route>
-                        <Route path="/author/edit" >
-                            <AuthorEdit/>
-                        </Route>
-                        <Route path="/author/details" >
-                            <AuthorDetails/>
-                        </Route>
-                        <Route path="/author/add" component={AuthorAdd} />
-                            {/* <AddAuthor />
-                        </Route> */}
+
+                        <Route path="/author/manage" component={AuthorManagerScreen} />
+                        <Route path="/book/manage" component={BookManagerScreen} />
+
+                        <Route path="/user/signin" component={Login} />
+                        <Route path="/user/signup" component={Register} />
+
                         <Route path="*" component={NotFound} />
                         
                     </Switch>
@@ -69,7 +68,6 @@ const Component=({title})=>{
 
             
         </div>;
-        
 };
 
 

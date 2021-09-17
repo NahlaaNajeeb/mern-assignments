@@ -1,11 +1,17 @@
 import React from 'react';
 
 
-const Component=({title,text,image})=>{
+const Component=({title,text,image,compact})=>{
 
     if(!image){
         image='/images/loading.gif';        
     }
+    
+    if(compact){
+        return <img width="80" src={image} alt={text} />
+    }
+
+    
     if(!title){
         title="Please wait"
     }

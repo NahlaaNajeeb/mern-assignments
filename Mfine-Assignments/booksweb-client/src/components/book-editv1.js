@@ -9,7 +9,7 @@ import NotFound from './not-found';
 const Component=(props)=>{
 
     console.log('props',props);
-    const[book,setBook]=useState(null); 
+    const[book,setBook]=useState(null);
 
     const {isbn}=useParams();
     console.log('isbn',isbn);
@@ -17,17 +17,16 @@ const Component=(props)=>{
     const history=useHistory();
     const [errors,setErrors]= useState(null, props);
     
-    
-     useEffect(()=>{
-       BookService.instance.getBookByIsbn(isbn).then(setBook);
-     })
+    useEffect(()=>{
+        BookService.instance.getBookByIsbn(isbn).then(setBook);
+    },[isbn]);
 
     if(book===null){
         return <Loading/>
     }
 
     if(book===undefined){
-        return <NotFound title="book Not Found" message={`Missing isbn: ${isbn}`}/>
+        return <NotFound title="Book Not Found" message={`Missing isbn: ${isbn}`}/>
     }
 
     const handleSave=async (book)=>{
@@ -41,11 +40,10 @@ const Component=(props)=>{
         }
     };
 
-   
     return (
         <div>
             <h2>Edit Info</h2>
-            <bookEditor book={book} error={errors} onSave={BookService.instance.update}/>
+            <BookEditor book={book} error={errors} onSave={BookService.instance.update}/>
         </div>
     );
 };

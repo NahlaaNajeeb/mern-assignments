@@ -2,100 +2,119 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Loading from './loading';
 import NotFound from './not-found';
-import ConfirmPopup from './confirm-popup';
 import { BookService } from '../services/book-service';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faInfo, faEdit, } from '@fortawesome/free-solid-svg-icons'
+
+
+
 
 
 const Component = () => {
 
     const [books, setBooks] = useState([]);
-
     const [book, setBook] = useState(null);
+
     useEffect(() => {
-        BookService.instance
-            .getAll()
-            .then(setBooks);     //.then(books=>setBooks(books))
+        BookService.instance.getAll().then(setBooks);
     }, []);
 
-    const handleDelete = async (book) => {
-        setBook(book);
-    }
-
-    const handleCancel = () => {
-        setBook(null);
-    }
-
-    const handleConfirm = async () => {
-        
-        console.log('trying to delete ',book.isbn);
-        let result = await BookService.instance.removeBook(book.isbn);
-        if (result.success) {
-            let newBooks = books.filter(b => b.isbn !== book.isbn);
-            setBooks(newBooks);
-        } else{
-            alert("Failed to delete book"+ result.error.message);
-        }
-        setBook(null);
-    }
-
-
+   
     if (books === null) {
         return <NotFound title="Error Connecting to Server" message="Ple try a little Later" />
     }
+
+
 
     if (books.length === 0) {
         return <Loading text="building our recommendation" />
     }
 
     return (
-        <div className='book-list'>
-            <h2>Our Recommendations</h2>
-            <button data-toggle="modal">Confirm</button>
-            <ConfirmPopup title="Confirm Delete"
-                onConfirm={handleConfirm}
-                onCancel={handleCancel}
-                show={book}
-            >
-                <div className="row">
-                    <img src={book?.cover} alt={book?.title} style={{ width: 80 }} className="col col-4"></img>
-                    <div className="col col-8">{book?.title}</div>
-                </div>
-            </ConfirmPopup>
-            <table className="table table-striped table-compact table-hover">
-                <thead>
-                    <tr>
-                        <th>Cover</th>
-                        <th>Title</th>
-                        <th>Author</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
+        <div>
 
+            <h2>Book List</h2>
+            <div className='body'>
+                <div className='container'>
+
+
+
+
+                    <div className='list'>
+                        <img src="http://thelostepic.com/wp-content/uploads/2021/04/THE-ACCURSED-GOD-Front-780x1100-1.jpg" />
+                        <div className='name'> The Lost Epic</div>
+                        
+
+                        <button className='btn btn-sm btn-primary '><FontAwesomeIcon icon={faInfo} /></button>
+                        <button className='btn btn-sm btn-primary'><FontAwesomeIcon icon={faEdit} /></button>
+
+
+                    </div>
+                    <div className='list'>
+                        <img src="https://kbimages1-a.akamaihd.net/1c469dcb-5d48-47cb-a61b-5298babdb0d3/1200/1200/False/harry-potter-and-the-chamber-of-secrets-6.jpg" />
+                        <div className='name'>Harry Potter</div>
+                        <button className='btn btn-sm btn-primary '><FontAwesomeIcon icon={faInfo} /></button>
+                        <button className='btn btn-sm btn-primary'><FontAwesomeIcon icon={faEdit} /></button>
+
+                    </div>
+                    <div className='list'>
+                        <img src= "https://cdn01.sapnaonline.com/product_media/9781408855706/md_9781408855706.jpg"/>
+                        <div className='name'>Harry Potter and the Half Blood Prince</div>
+                        <button className='btn btn-sm btn-primary '><FontAwesomeIcon icon={faInfo} /></button>
+                        <button className='btn btn-sm btn-primary'><FontAwesomeIcon icon={faEdit} /></button>
+
+                    </div>
+                    <div className='list'>
+                        <img src="https://cdn11.bigcommerce.com/s-z7qq7adctg/images/stencil/500x659/products/674092/774560/btcl__84587.1522183285.jpg?c=2" />
+                        <div className='name'>Harry Potter and the Chamber of Secrets</div>
+                        <button className='btn btn-sm btn-primary '><FontAwesomeIcon icon={faInfo} /></button>
+                        <button className='btn btn-sm btn-primary'><FontAwesomeIcon icon={faEdit} /></button>
+
+                    </div>
+                    {/* <div className='list'>
+                        <img src='/images/rowling.jpg' />
+                        <div className='name'>JK Rowling</div> */}
+                        
+                    
+                        
+
+                        <button   className='btn btn-sm btn-primary '><FontAwesomeIcon icon={faInfo} /></button>
+                        <button className='btn btn-sm btn-primary'><FontAwesomeIcon icon={faEdit} /></button>
+
+                        
+                    </div>
+                </div>
+
+
+
+
+
+
+                {/* <tbody>
                     {
                         books.map((book) => (
-                            <tr key={book._id}>
-                                <td><img src={book.cover} /></td>
-                                <td>{book.title}</td>
-                                <td>{book.author}</td>
+                            <tr key={book.id}>
+                                <td>{book.name}</td>
+
                                 <td>
 
-                                    <Link to={`/book/details/${book.isbn}`} className='btn  btn-primary'><FontAwesomeIcon icon={faInfo} /> </Link>
-                                    <Link to={`/book/edit/${book.isbn}`} className='btn  btn-primary '><FontAwesomeIcon icon={faEdit} /></Link>
-                                    <button onClick={() => handleDelete(book)} className='btn btn-danger'><FontAwesomeIcon icon={faTrash} /></button>
+                                    <Link to={`/book/details/{book.id}`} className='btn btn-sm btn-primary '><FontAwesomeIcon icon={faInfo} /></Link>
+                                    <Link to={`/book/edit/{book.id}`} className='btn btn-sm btn-primary'><FontAwesomeIcon icon={faEdit} /></Link>
+
                                 </td>
                             </tr>
                         ))
                     }
+                </tbody> */}
+            </div>
+        // </div>);
 
-
-
-                </tbody>
-            </table>
-
-        </div>);
+    );
 }
 
-export default Component
+
+
+
+
+
+export default Component;

@@ -1,5 +1,5 @@
 import { contains, copyObject, delay } from '../utils/core';
-import http from './http';
+import getHttp from './http';
 //import axios from 'axios';
 const url = 'http://localhost:5000/api/books/';
 
@@ -13,14 +13,14 @@ export class BookService {
     getAll=async ()=>{
         try{
             //TODO: your await logic here
-            // let response= await axios.get(url,{
+            // let response= await axios.get(url,{oo
             //     headers:{
             //         "x-api-key":"LET ME PASS"                    
             //     }
             // });
 
-            let response=await  http.get('books'); //http://localhost:5000/api/books
-            console.log('response',response);
+            let response=await  getHttp().get('books'); //http://localhost:5000/api/books
+            //console.log('response',response);
             return response.data;
             
         }catch(error){
@@ -53,7 +53,7 @@ export class BookService {
     addBook = async (book) => {
         try{
             //let response=await axios.post(url,book);            
-            let response= await http.post('books',book);
+            let response= await getHttp().post('books',book);
             return {success:true, data:response.data};
 
         }catch(error){
@@ -63,13 +63,17 @@ export class BookService {
         }
     }
 
-    async update(book) {
+    update=async (book) =>{
         //TODO: COMPLETE THIS WORK!
+        
         const isbn=book.isbn;
+        console.log('trying to update ', book);
         try{
-            let response=await http.put(`/books/${isbn}`,book);
+            let response=await getHttp().put(`/books/${isbn}`,book);
+            console.log('response',response);
             return {success:true,data:response};
         }catch(error){
+            console.log('typeof error',typeof error);
             return {success:false, error:error};
         }
     }
@@ -77,11 +81,11 @@ export class BookService {
     getBookByIsbn = async (isbn) => {
         try{
             //let response=await axios.get(`${url}/${isbn}`);
-            let response= await http.get(`books/${isbn}`);
+            let response= await getHttp().get(`books/${isbn}`);
             console.log('book by isbn', response.data);
             return response.data;
         }catch(error){
-            console.log('error fetching book by isbn',error);
+            //console.log('error fetching book by isbn',error);
             return undefined;
         }
     }
@@ -90,7 +94,7 @@ export class BookService {
       //TODO: IMPLEMENT THE REMOVE BOOK
       try{
         console.log('deleting in service',isbn);
-        await http.delete(`books/${isbn}`);
+        await getHttp().delete(`books/${isbn}`);
         console.log('book deleted successfully',isbn);
         return {success:true};
       }catch(error){

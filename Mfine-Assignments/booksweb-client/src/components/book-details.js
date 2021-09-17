@@ -2,6 +2,7 @@ import React, {useState,useEffect}from 'react';
 import "./book-details.css";
 import {withRouter} from 'react-router-dom';
 import {BookService} from '../services/book-service';
+import StarRating from './star-rating';
 import Loading from './loading';
 import NotFound from './not-found';
 
@@ -38,7 +39,7 @@ const Component=(props)=>{
                 <div className='info'>
                     <ul>
                         <li>Price: {book.price}</li>
-                        <li>Rating: {book.rating}</li>
+                        <StarRating rating={book.rating} />
                     </ul>
                     <hr/>
                     <h4>Synopsis</h4>
