@@ -43,6 +43,7 @@ function handleRequest( requestHandler ){
             
 
         }catch(error){
+            console.log('unindentified error',error);
             response.status(error.status).json(error.details);
         }
 

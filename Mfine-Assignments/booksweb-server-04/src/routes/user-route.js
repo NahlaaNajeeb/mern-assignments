@@ -9,8 +9,13 @@ const getRouter=()=>{
 
     router
         .route("/")
-        .get(handleRequest(userService.getAllUsers))
+        .get(userService.authorize("admin"),handleRequest(userService.getAllUsers))
         .post(handleRequest(userService.register));
+
+
+    router
+        .route("/login")
+        .post(handleRequest(userService.login));
 
 
     return router;

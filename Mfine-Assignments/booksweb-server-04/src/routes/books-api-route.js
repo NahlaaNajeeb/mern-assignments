@@ -1,6 +1,7 @@
 const express=require('express');
 const {BookService}=require('../services/book-service');
 const {handleRequest}=require('../utils/express-utils');
+const {authenticate} =require('../services/user-service');
 
 
 
@@ -16,26 +17,27 @@ const getRouter= ()=>{
     router  
         .route("/")    
         .get(handleRequest(service.getAllBooks))
-        .post(handleRequest(service.addBook));
+        .post(authenticate,handleRequest(service.addBook)); //adding book only after logging in
 
 
 
-  //--->  api/books/titles
-  router.get('/titles', handleRequest(service.getAllTitles));
-
-  //---> api/books/Authors
-  router.get('/authors',handleRequest(service.getAllAuthors));
   
-
     //---->  api/books/5555
     router 
     .route('/:id')
     .get(handleRequest(service.getBookByIsbn))
-    .put(handleRequest(service.updateBook))
-    .delete(handleRequest(service.removeBook));
+    .put(authenticate,handleRequest(service.updateBook))
+    .delete(authenticate,handleRequest(service.removeBook));
 
 
- 
+    //--->  api/books/titles
+    router.get('/titles', handleRequest(service.getAllTitles));
+  
+    //---> api/books/Authors
+    router.get('/authors',handleRequest(service.getAllAuthors));
+    
+  
+
   router.get('/by/:author',handleRequest(service.getBooksByAuthor));
 
   router.get('/search/term',handleRequest(service.search));

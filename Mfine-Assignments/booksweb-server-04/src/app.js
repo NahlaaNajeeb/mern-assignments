@@ -4,8 +4,10 @@ const bodyParser = require('body-parser');
 const getBookRouter = require('./routes/books-api-route');
 const getOldBookRouter = require('./routes/books-api-route-old');
 const getUserRouter = require('./routes/user-route');
+const getAuthorRouter = require('./routes/author-api-route');
+const {verifyToken} =require('./services/user-service');
+const getApiKeyRouter= require('./routes/api-key-route');
 const cors = require('cors');
-const getAuthorRouter=require('./routes/authors-api-route');
 
 
 function configureCORS(app) {
@@ -45,37 +47,56 @@ function configureCORS(app) {
 
 }
 
+function apiKeyCors(request,response,next){
+    
+   
+    response.setHeader("Access-Control-Expose-Headers","*");
+    response.setHeader("Access-Control-Allow-Headers","*");
+    response.setHeader("Access-Control-Allow-Origin",request.headers.origin);   
+    
+    const apiKey = request.headers["x-api-key"];
+    
+    if(apiKey==="LET ME PASS" ){        
+    
+        response.setHeader("Access-Control-Allow-Origin",request.headers.origin);
+    } else{
+       
+        if(request.method!=="OPTIONS"){
+            response.setHeader("Access-Control-Allow-Origin","http://localhost:5000");
+        } else {
+            console.log("OPTIONS Request");
+        }
+    }
+    
+    next();
+   
+}
+
+function corsAll(request,response,next){
+    response.setHeader("Access-Control-Expose-Headers","*");
+    response.setHeader("Access-Control-Allow-Headers","*");
+    response.setHeader("Access-Control-Allow-Origin","*"); 
+    response.setHeader("Access-Control-Allow-Methods","*");
+
+    next();
+}
+
 function configureExpress(basePath) {
     const app = express();
     app.use(bodyParser.json());
     app.use(express.static(path.join(basePath, 'public')));
 
-    //Middleware to allow CORS
-    // app.use((request,response,next) =>{
-    //     //console.log('request.headers',request.headers);
-    //     let apiKey=request.headers.api_key;
-    //     if(true)  
-    //         //allow whichever origin is making the request.
-    //         response.setHeader("Access-Control-Allow-Origin",request.headers.origin);
-    //     next();
-    // });
-
-    
-    //configureCORS(app);
-
-    app.use(cors()); //allow all requests
-
+    //app.use(apiKeyCors)
+    app.use(verifyToken);  //this middleware add user
+    app.use(corsAll);
     
 
-
-
-    //console.log(getBookRouter);
-    //console.log(getBookRouter());
-
+   
     app.use('/api/v1/books', getOldBookRouter());
     app.use('/api/books', getBookRouter());
+    app.use('/api/authors', getAuthorRouter());
     app.use('/api/users', getUserRouter());
-    app.use('/api/authors',getAuthorRouter());
+    app.use('/api/key',getApiKeyRouter());
 
     return app;
 };
